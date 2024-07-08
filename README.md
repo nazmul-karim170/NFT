@@ -1,45 +1,62 @@
 
-<h2 align="center"> <a href="https://github.com/nazmul-karim170/FIP-Fisher-Backdoor-Removal">Fisher Information guided Purification against Backdoor Attacks</a></h2>
+<h2 align="center"> <a href="https://github.com/nazmul-karim170/NFT-Augmented-Backdoor-Purification">Augmented Neural Fine-Tuning for Efficient
+Backdoor Purification</a></h2>
 <h5 align="center"> If you like our project, please give us a star ⭐ on GitHub for the latest update.  </h2>
 
 <h5 align="center">
 
 [![arXiv](https://img.shields.io/badge/Arxiv-2312.09313-b31b1b.svg?logo=arXiv)](https://arxiv.org/pdf/2107.01330.pdf)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/nazmul-karim170/FIP-Fisher-Backdoor-Removal/blob/main/LICENSE) 
-
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/nazmul-karim170/NFT-Augmented-Backdoor-Purification/blob/main/LICENSE) 
 
 </h5>
 
 ## [Paper](https://arxiv.org/pdf/2107.01330.pdf) 
 
-## Smoothness Analysis of Backdoor Models
-<img src="assets/fip_analysis.png"/>
 
 ## 😮 Highlights
 
 
-### 💡 Fast and Effective Backdoor Purification 
-- Clean Accuracy Retainer clean accuracy --> High-quality
-
-
+### 💡 Simple, Efficient Backdoor Purification 
+- Neural Mask Fine-tuning instead of direct weight fine-tuning
+- A universal data augmentation, MixUp for assuming the validation dataset for fine-tuning
+- Clean accuracy preserving regularizer for better clean test accuracy after purification
+- Extensive Evaluation of different benchmarks 
 
 ## 🚩 **Updates**
 
 Welcome to **watch** 👀 this repository for the latest updates.
 
-✅ **[2023.04.07]** : FIP is accepted to ACM CCS'2024
+✅ **[2023.07.07]** : Code for NFT is released
 
+✅ **[2023.01.07]** : NFT is accepted to ECCV'2024
 
 
 ## 🛠️ Methodology
+* We propose–Neural mask Fine-tuning (NFT)– with an aim to optimally re-organize the neuron activities in a way that the effect of the backdoor is removed.
 
-### Main Overview
+* Utilizing a simple data augmentation like MixUp, NFT relaxes the trigger synthesis process and eliminates the requirement of the adversarial search module, present in previous SOTA.
 
-<img src="assets/fip_summary.png"/>
+* Our study further reveals that direct weight fine-tuning under limited validation data results in poor post-purification clean test accuracy, primarily due to overfitting issue. To overcome this, we propose to
+fine-tune neural masks instead of model weights.
 
-## Code for Training
-Implementation of FIP 
+* In addition, a mask regularizer has been devised to further mitigate the model drift during the purification process.
+  
+* The distinct characteristics of NFT render it highly efficient in both runtime and sample usage, as it can remove the backdoor even when a single sample is available from each class
+  
+## PyTorch Implementation 
 
+### Create Conda Environment 
+
+* Install <a href="https://docs.anaconda.com/anaconda/install/linux/">Anaconda</a> and create an environment
+	```bash
+	conda create -n fip-env python=3.10
+ 	conda activate fip-env
+	```
+
+* After creating a virtual environment, run
+	```bash
+	pip install -r requirements.txt
+	```
 
 ### Download the Datasets
 * Image Classification (CIFAR10, <a href="https://kaggle.com/datasets/meowmeowmeowmeowmeow/gtsrb-german-traffic-sign/data">GTSRB</a>, <a href="https://www.kaggle.com/datasets/nikhilshingadiya/tinyimagenet200">GTSRB</a>, <a href="https://www.kaggle.com/c/imagenet-object-localization-challenge/data">ImageNet</a>)
@@ -96,25 +113,13 @@ python train_backdoor_cifar.py --poison-type blend --poison-rate 0.10 --output-d
 * Follow <a href="https://github.com/ShannonAI/backdoor_nlg">this link</a> to create the backdoor model.
 
 
-### Backdoor Analysis
 
-* For smoothness analysis, run the following-
-	```bash
-	cd Smoothness Analysis
-	```
-
-	```bash
-	python hessian_analysis.py --resume "path-to-the-model"
-	```
- 
-* NOTE: "pyhessian" is an old package. Updated PyTorch can cause some issues while running this. You may see a lot of warnings. 
-
-### FIP based Backdoor Purification 
+### Backdoor Purification using NFT
 
 * For CIFAR10, To remove the backdoor with 1% clean validation data-
   
 	```bash
-	python Remove_Backdoor_SFT.py --poison-type blend --val-frac 0.01 --checkpoint "path/to/backdoor/model" --gpuid 0 
+	python Remove_Backdoor.py --poison-type blend --val-frac 0.01 --checkpoint "path/to/backdoor/model" --gpuid 0 
 	```
 
 * Please change the dataloader and data transformations according to the dataset.
@@ -128,35 +133,13 @@ python train_backdoor_cifar.py --poison-type blend --poison-rate 0.10 --output-d
   	* For Language Generation, follow <a href="https://aclanthology.org/2020.coling-main.305/">this paper</a> to apply MixUp.
 
 
-### For Adaptive Attack [Attacker has prior knowledge of FIP]
-
-* We can do it in two ways
-
- 	* We can exactly follow the FIP implementation with high "--reg_F ($eta$_F in the paper)"
-    
-	   	```bash
-		python train_backdoor_with_spect_regul.py --reg_F 0.01 
-		```
-  
- 	* We can deploy Sharpness-aware minimization (SAM) optimizer during training. Use a value greater than 2 for "--rho"
-    
-	   	```bash
-		python train_backdoor_with_sam.py  --rho 3
-		```
- 
 ## 🚀 Purification Results
 
+<img src="assets/nft_results.png"/>
 
+### Analysis
 
-
-
-### Fisher Information-based purification
-
-<img src="assets/fip_purification_and_runtime.png"/>
-
-### tSNE Plot
-
-<img src="assets/fip_tsne_plot.png"/>
+<img src="assets/nft_tsne.png"/>
 
 ## ✏️ Citation
 If you find our paper and code useful in your research, please consider giving a star :star: and a citation :pencil:.
