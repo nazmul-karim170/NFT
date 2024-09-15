@@ -144,7 +144,13 @@ python train_backdoor_cifar.py --poison-type blend --poison-rate 0.10 --output-d
 ## ✏️ Citation
 If you find our paper and code useful in your research, please consider giving a star :star: and a citation :pencil:.
 
-```BibTeX
+```
+@article{karim2024augmented,
+  title={Augmented Neural Fine-Tuning for Efficient Backdoor Purification},
+  author={Karim, Nazmul and Arafat, Abdullah Al and Khalid, Umar and Guo, Zhishan and Rahnavard, Nazanin},
+  journal={arXiv preprint arXiv:2407.10052},
+  year={2024}
+}
 ```
 <!---->
 
